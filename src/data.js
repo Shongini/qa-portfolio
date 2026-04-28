@@ -1,43 +1,80 @@
 import {
-  FaBug,
-  FaFlask,
-  FaGitlab,
-  FaLinux,
-  FaPeopleArrows,
-  FaProjectDiagram,
+  FaCode,
+  FaCodeBranch,
+  FaDatabase,
   FaRobot,
-  FaServer
+  FaServer,
+  FaTools
 } from "react-icons/fa";
 
-export const skills = [
-  { name: "Selenium", level: 92, icon: FaBug },
-  { name: "Robot Framework", level: 88, icon: FaRobot },
-  { name: "SQL", level: 80, icon: FaServer },
-  { name: "REST API", level: 90, icon: FaProjectDiagram },
-  { name: "Linux", level: 84, icon: FaLinux },
-  { name: "Jira", level: 85, icon: FaFlask },
-  { name: "GitLab CI", level: 82, icon: FaGitlab },
-  { name: "Scrum", level: 89, icon: FaPeopleArrows }
+export const techStackCategories = [
+  {
+    title: "Automation Testing",
+    icon: FaRobot,
+    items: ["Selenium", "Robot Framework", "Playwright"]
+  },
+  {
+    title: "API Testing",
+    icon: FaCodeBranch,
+    items: ["Postman", "SoapUI", "GraphQL"]
+  },
+  {
+    title: "Programming & Scripting",
+    icon: FaCode,
+    items: ["Python", "Groovy", "SQL", "Bash / Linux CLI"]
+  },
+  {
+    title: "Messaging & Data",
+    icon: FaDatabase,
+    items: ["SQL", "Kafka", "RabbitMQ", "ElasticSearch"]
+  },
+  {
+    title: "CI/CD & QA Tools",
+    icon: FaTools,
+    items: ["Jenkins", "GitLab", "Jira", "Xray", "Confluence"]
+  },
+  {
+    title: "Monitoring & Infrastructure",
+    icon: FaServer,
+    items: ["Kibana", "Grafana", "DevTools", "Kubernetes"]
+  }
 ];
 
 export const experience = [
   {
-    company: "Ticketmaster",
-    role: "Event Creation Specialist",
-    period: "Current",
-    details: "Created and managed high-traffic event listings with quality and release discipline."
+    company: "T-Mobile",
+    role: "QA Engineer (Integration & API Validation)",
+    period: "Sep 2024 - Present",
+    highlights: [
+      "Perform manual end-to-end testing of API integrations between internal systems.",
+      "Create test scenarios from requirements and implementation documentation.",
+      "Validate SOAP and REST services using SoapUI and verify data with SQL queries.",
+      "Analyze logs and investigate issues using Linux commands and Kubernetes tools.",
+      "Identify defects and collaborate with developers and analysts in Agile teams."
+    ]
   },
   {
-    company: "IGT Poland",
-    role: "Operator",
-    period: "Previous",
-    details: "Handled operational workflows and quality-sensitive production processes."
+    company: "Comarch",
+    role: "Junior Quality Assurance Engineer",
+    period: "Aug 2022 - Aug 2024",
+    highlights: [
+      "Designed and executed manual test scenarios for web applications, including regression and integration testing.",
+      "Prepared test cases based on business and technical requirements.",
+      "Performed API testing using GraphQL and Postman.",
+      "Developed automated GUI tests using Robot Framework and Selenium.",
+      "Investigated issues with DevTools, Kibana, and Grafana, and tracked defects in Jira/Xray."
+    ]
   },
   {
-    company: "Teva / Polfarma / Adamed",
-    role: "Validation QA",
-    period: "Earlier",
-    details: "Validated pharma-related systems and documentation according to strict quality standards."
+    company: "ZMR",
+    role: "QA and Documentation Intern",
+    period: "Apr 2022 - Jul 2022",
+    highlights: [
+      "Prepared technical and quality assurance documentation.",
+      "Supported validation testing processes and quality checks.",
+      "Performed measurements using diagnostic tools.",
+      "Worked according to GMP standards and quality procedures."
+    ]
   }
 ];
 

@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import emailjs from "@emailjs/browser";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 import { SectionTitle } from "./components/SectionTitle";
-import { blogPosts, experience, projects, skills } from "./data";
+import { blogPosts, experience, projects, techStackCategories } from "./data";
 
 const sectionAnim = {
   hidden: { opacity: 0, y: 24 },
@@ -14,7 +14,67 @@ const sectionAnim = {
 function App() {
   const formRef = useRef(null);
   const [status, setStatus] = useState("");
+  const [showGithubAvatar, setShowGithubAvatar] = useState(true);
+  const [stylizedAvatarSrc, setStylizedAvatarSrc] = useState("");
+  const [canUseStylizedAvatar, setCanUseStylizedAvatar] = useState(false);
   const year = useMemo(() => new Date().getFullYear(), []);
+  const featuredTechStack = techStackCategories.slice(0, 2);
+  const supportingTechStack = techStackCategories.slice(2);
+
+  useEffect(() => {
+    const avatarSources = [
+      "/avatar-1600.webp.png",
+      "/avatar-1600.webp",
+      "https://i.postimg.cc/FR4wLGw6/Chat-GPT-Image-9-lut-2026-13-57-38.png"
+    ];
+
+    let isMounted = true;
+
+    const tryLoadAvatar = (index = 0) => {
+      if (index >= avatarSources.length) {
+        if (isMounted) {
+          setCanUseStylizedAvatar(false);
+        }
+        return;
+      }
+
+      const candidateSrc = avatarSources[index];
+      const testImage = new Image();
+      testImage.src = candidateSrc;
+
+      testImage.onload = () => {
+        // Avoid visibly pixelated avatars by requiring enough source resolution.
+        if (!isMounted) return;
+        if (testImage.naturalWidth >= 1000) {
+          setStylizedAvatarSrc(candidateSrc);
+          setCanUseStylizedAvatar(true);
+          return;
+        }
+        tryLoadAvatar(index + 1);
+      };
+
+      testImage.onerror = () => {
+        if (!isMounted) return;
+        tryLoadAvatar(index + 1);
+      };
+    };
+
+    tryLoadAvatar();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!canUseStylizedAvatar) return undefined;
+
+    const switchAvatar = setInterval(() => {
+      setShowGithubAvatar((prev) => !prev);
+    }, 4000);
+
+    return () => clearInterval(switchAvatar);
+  }, [canUseStylizedAvatar]);
 
   const sendEmail = async (event) => {
     event.preventDefault();
@@ -60,14 +120,16 @@ function App() {
         >
           <div>
             <p className="mb-3 inline-block rounded-full border border-neonPurple/50 px-3 py-1 text-xs uppercase tracking-widest text-neonPurple">
-              Cyberpunk QA Vibe
+              Portfolio
             </p>
             <h1 className="text-3xl font-bold leading-tight text-white md:text-5xl">
-              Dawid Chryc, QA Specialist & Event Creator
+              Dawid Chryc - QA Specialist & IT Engineer
             </h1>
             <p className="mt-4 max-w-xl text-sm text-slate-300 md:text-base">
-              Testing digital products with precision, automation, and release confidence. I build quality gates that ship
-              faster without sacrificing reliability.
+              Software Test Engineer with 3.5+ years of experience ensuring reliable, high-quality web applications
+              through manual, API, and automated testing. I help teams release faster with confidence by preventing
+              production issues, improving test coverage, and delivering clear, business-focused quality insights. I also
+              apply AI-enabled QA workflows to accelerate test design, defect analysis, and delivery efficiency.
             </p>
             <div className="mt-5 flex flex-wrap gap-2 text-xs md:text-sm">
               {["Automation Testing", "API Verification", "Validation QA", "CI/CD Mindset"].map((chip) => (
@@ -83,11 +145,23 @@ function App() {
               Hire Me
             </a>
           </div>
-          <div className="mx-auto w-full max-w-xs overflow-hidden rounded-2xl border border-neonPurple/40 shadow-purple">
+          <div className="relative mx-auto aspect-square w-full max-w-xs overflow-hidden rounded-2xl border border-neonPurple/40 shadow-purple">
             <img
-              src="https://i.postimg.cc/FR4wLGw6/Chat-GPT-Image-9-lut-2026-13-57-38.png"
-              alt="Dawid Chryc portrait"
-              className="h-full w-full object-cover"
+              src="https://github.com/Shongini.png?size=800"
+              srcSet="
+                https://github.com/Shongini.png?size=400 400w,
+                https://github.com/Shongini.png?size=800 800w
+              "
+              sizes="(max-width: 768px) 100vw, 320px"
+              alt="Dawid Chryc portrait from GitHub"
+              loading="eager"
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${showGithubAvatar || !canUseStylizedAvatar ? "opacity-100" : "opacity-0"}`}
+            />
+            <img
+              src={stylizedAvatarSrc}
+              alt="Dawid Chryc portrait stylized"
+              loading="eager"
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${!showGithubAvatar && canUseStylizedAvatar ? "opacity-100" : "opacity-0"}`}
             />
           </div>
         </motion.section>
@@ -95,24 +169,69 @@ function App() {
         <motion.section id="skills" initial="hidden" whileInView="show" viewport={{ once: true }} variants={sectionAnim}>
           <SectionTitle
             eyebrow="Core Toolkit"
-            title="Skills Matrix"
-            subtitle="Modern QA automation and quality processes tailored for high-confidence releases."
+            title="Tech Stack"
+            subtitle="Primary QA strengths first, followed by supporting tools in a clean enterprise-style layout."
           />
-          <div className="grid gap-4 sm:grid-cols-2">
-            {skills.map(({ name, level, icon: Icon }) => (
-              <div key={name} className="rounded-xl border border-slate-800 bg-card p-4">
-                <div className="mb-3 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Icon className="text-neonBlue" />
-                    <span className="font-medium text-white">{name}</span>
+          <div className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              {featuredTechStack.map(({ title, icon: Icon, items }) => (
+                <article
+                  key={title}
+                  className="group relative overflow-hidden rounded-2xl border border-neonBlue/30 bg-gradient-to-br from-slate-900/90 to-slate-950/80 p-6 backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-neonBlue/70 hover:shadow-neon"
+                >
+                  <span className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-neonBlue/80 to-transparent opacity-80" />
+                  <div className="pointer-events-none absolute inset-0 opacity-40 [background:radial-gradient(circle_at_15%_15%,rgba(34,211,238,0.18),transparent_45%),radial-gradient(circle_at_85%_85%,rgba(168,85,247,0.16),transparent_40%)]" />
+                  <div className="relative">
+                    <div className="mb-4 flex items-center gap-3">
+                      <span className="rounded-xl border border-neonPurple/40 bg-slate-900/80 p-3 text-xl text-neonBlue transition group-hover:text-white">
+                        <Icon />
+                      </span>
+                      <h3 className="text-lg font-semibold text-white">{title}</h3>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {items.map((item) => (
+                        <span
+                          key={item}
+                          className="rounded-full border border-slate-700 bg-slate-900/90 px-2.5 py-1 text-xs text-slate-100 transition group-hover:border-neonPurple/50 md:px-3 md:py-1 md:text-sm"
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <span className="text-xs text-slate-400">{level}%</span>
-                </div>
-                <div className="h-2 rounded-full bg-slate-800">
-                  <div className="h-2 rounded-full bg-gradient-to-r from-neonBlue to-neonPurple" style={{ width: `${level}%` }} />
-                </div>
-              </div>
-            ))}
+                </article>
+              ))}
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {supportingTechStack.map(({ title, icon: Icon, items }) => (
+                <article
+                  key={title}
+                  className="group relative flex h-full overflow-hidden rounded-xl border border-slate-800 bg-slate-900/75 p-4 backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-neonPurple/50 hover:shadow-purple"
+                >
+                  <span className="pointer-events-none absolute inset-x-3 top-0 h-px bg-gradient-to-r from-transparent via-neonPurple/70 to-transparent opacity-80" />
+                  <div className="pointer-events-none absolute inset-0 opacity-25 [background:radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.14),transparent_45%)]" />
+                  <div className="relative flex h-full flex-col">
+                    <div className="mb-3 flex items-center gap-2">
+                      <span className="rounded-lg border border-slate-700 bg-slate-900 p-2 text-sm text-neonBlue transition group-hover:text-white">
+                        <Icon />
+                      </span>
+                      <h3 className="text-sm font-semibold text-white">{title}</h3>
+                    </div>
+                    <div className="mt-auto flex flex-wrap gap-2">
+                      {items.map((item) => (
+                        <span
+                          key={item}
+                          className="rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-xs text-slate-200 transition group-hover:border-neonBlue/40 md:px-3 md:py-1 md:text-sm"
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </motion.section>
 
@@ -129,7 +248,14 @@ function App() {
                 <p className="text-xs uppercase tracking-widest text-neonPurple">{item.period}</p>
                 <h3 className="mt-1 text-lg font-semibold text-white">{item.company}</h3>
                 <p className="text-sm text-neonBlue">{item.role}</p>
-                <p className="mt-2 text-sm text-slate-300">{item.details}</p>
+                <ul className="mt-3 space-y-2 text-sm text-slate-300">
+                  {item.highlights.map((point) => (
+                    <li key={point} className="flex gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-neonBlue/70" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
