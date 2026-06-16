@@ -80,22 +80,22 @@ export const experience = [
 
 export const projects = [
   {
-    title: "API Regression Guard",
-    description: "Automated API regression suite with report snapshots and fast smoke runs.",
-    github: "https://github.com/",
-    demo: "#"
+    title: "Wow---Memory-Test-Game",
+    description: "JavaScript memory game inspired by Warcraft, focused on gameplay logic and interactive UI behavior.",
+    github: "https://github.com/Shongini/Wow---Memory-Test-Game",
+    demo: "https://github.com/Shongini/Wow---Memory-Test-Game"
   },
   {
-    title: "UI Test Matrix",
-    description: "Cross-browser Selenium pack with reusable page objects and CI pipelines.",
-    github: "https://github.com/",
-    demo: "#"
+    title: "Application-Testing---Comarch-Opaska-Zycia",
+    description: "QA-focused project documenting testing approach and practical validation work for a real application context.",
+    github: "https://github.com/Shongini/Application-Testing---Comarch-Opaska-Zycia",
+    demo: "https://github.com/Shongini/Application-Testing---Comarch-Opaska-Zycia"
   },
   {
-    title: "VibeCoding QA Assistant",
-    description: "Experimental helper to generate and review test cases using AI prompts.",
-    github: "https://github.com/",
-    demo: "#"
+    title: "New-Years-Event",
+    description: "Python project for managing event information and guest lists, showing practical scripting and data organization.",
+    github: "https://github.com/Shongini/New-Years-Event",
+    demo: "https://github.com/Shongini/New-Years-Event"
   }
 ];
 

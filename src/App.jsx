@@ -1,10 +1,8 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import emailjs from "@emailjs/browser";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 import { SectionTitle } from "./components/SectionTitle";
-import { blogPosts, experience, projects, techStackCategories } from "./data";
+import { experience, projects, techStackCategories } from "./data";
 
 const sectionAnim = {
   hidden: { opacity: 0, y: 24 },
@@ -81,13 +79,29 @@ function App() {
     if (!formRef.current) return;
     setStatus("Sending...");
 
+    const formData = new FormData(formRef.current);
+    const fromName = formData.get("from_name");
+    const replyTo = formData.get("reply_to");
+    const message = formData.get("message");
+
     try {
-      await emailjs.sendForm(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        formRef.current,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-      );
+      const response = await fetch("https://formsubmit.co/ajax/dawid.chryc.99@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          name: fromName,
+          email: replyTo,
+          message
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Could not send message");
+      }
+
       setStatus("Message sent. Thank you!");
       formRef.current.reset();
     } catch {
@@ -285,26 +299,6 @@ function App() {
           </div>
         </motion.section>
 
-        <motion.section initial="hidden" whileInView="show" viewport={{ once: true }} variants={sectionAnim}>
-          <SectionTitle
-            eyebrow="Insights"
-            title="Latest Blog Posts"
-            subtitle="Short practical notes from my QA process and automation approach."
-          />
-          <div className="grid gap-4 md:grid-cols-3">
-            {blogPosts.map((post) => (
-              <article key={post.title} className="rounded-xl border border-slate-800 bg-card p-5">
-                <p className="text-xs text-slate-400">{post.date}</p>
-                <h3 className="mt-2 text-lg font-semibold text-white">{post.title}</h3>
-                <p className="mt-2 text-sm text-slate-300">{post.excerpt}</p>
-              </article>
-            ))}
-          </div>
-          <Link to="/blog" className="mt-6 inline-block text-sm text-neonBlue hover:text-white">
-            Open full blog feed &rarr;
-          </Link>
-        </motion.section>
-
         <motion.section id="contact" initial="hidden" whileInView="show" viewport={{ once: true }} variants={sectionAnim}>
           <SectionTitle
             eyebrow="Connect"
@@ -341,16 +335,16 @@ function App() {
             <div className="rounded-xl border border-slate-800 bg-card p-5">
               <p className="text-sm text-slate-300">Find me online and download my CV:</p>
               <div className="mt-4 space-y-3 text-sm">
-                <a href="mailto:hello@example.com" className="flex items-center gap-2 text-neonBlue hover:text-white">
+                <a href="mailto:dawid.chryc.99@gmail.com" className="flex items-center gap-2 text-neonBlue hover:text-white">
                   <FaEnvelope /> Email
                 </a>
-                <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-neonBlue hover:text-white">
+                <a href="https://www.linkedin.com/in/dawid-c-2aa79521b/" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-neonBlue hover:text-white">
                   <FaLinkedin /> LinkedIn
                 </a>
-                <a href="https://github.com/" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-neonBlue hover:text-white">
+                <a href="https://github.com/Shongini" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-neonBlue hover:text-white">
                   <FaGithub /> GitHub
                 </a>
-                <a href="/cv-dawid-chryc.txt" className="inline-block rounded-lg border border-neonGreen/50 px-4 py-2 text-neonGreen hover:bg-neonGreen/10">
+                <a href="/Chryc-Dawid-CV.pdf" download className="inline-block rounded-lg border border-neonGreen/50 px-4 py-2 text-neonGreen hover:bg-neonGreen/10">
                   Download CV
                 </a>
               </div>
