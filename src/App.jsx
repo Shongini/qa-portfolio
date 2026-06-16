@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
-import { SectionTitle } from "./components/SectionTitle";
+import { BrandMark, SectionTitle } from "./components/SectionTitle";
 import { experience, projects, techStackCategories } from "./data";
 
 const sectionAnim = {
@@ -113,10 +113,20 @@ function App() {
     <div className="min-h-screen bg-bg text-slate-100">
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.12),transparent_35%),radial-gradient(circle_at_80%_30%,rgba(168,85,247,0.14),transparent_30%)]" />
 
-      <header className="sticky top-0 z-20 border-b border-slate-800 bg-bg/80 backdrop-blur">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
-          <p className="text-sm font-semibold tracking-wider text-neonBlue">DAWID // QA</p>
-          <div className="flex gap-4 text-sm text-slate-300">
+      <aside className="fixed left-0 top-0 z-20 hidden h-screen w-56 border-r border-slate-800 bg-bg/90 p-6 backdrop-blur md:flex md:flex-col">
+        <BrandMark />
+        <nav className="mt-8 flex flex-col gap-4 font-mono text-sm uppercase tracking-wider text-slate-300">
+          <a href="#skills" className="hover:text-neonBlue">Skills</a>
+          <a href="#experience" className="hover:text-neonBlue">Experience</a>
+          <a href="#projects" className="hover:text-neonBlue">Projects</a>
+          <a href="#contact" className="hover:text-neonBlue">Contact</a>
+        </nav>
+      </aside>
+
+      <header className="sticky top-0 z-20 border-b border-slate-800 bg-bg/80 backdrop-blur md:hidden">
+        <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+          <BrandMark compact />
+          <div className="flex gap-4 font-mono text-xs uppercase tracking-wider text-slate-300">
             <a href="#skills" className="hover:text-neonBlue">Skills</a>
             <a href="#experience" className="hover:text-neonBlue">Experience</a>
             <a href="#projects" className="hover:text-neonBlue">Projects</a>
@@ -125,7 +135,7 @@ function App() {
         </nav>
       </header>
 
-      <main className="relative z-10 mx-auto flex max-w-6xl flex-col gap-20 px-4 pb-16 pt-10 md:px-6 md:pt-16">
+      <main className="relative z-10 mx-auto flex max-w-6xl flex-col gap-20 px-4 pb-16 pt-10 md:ml-56 md:max-w-none md:px-8 md:pt-16">
         <motion.section
           initial="hidden"
           animate="show"
@@ -133,11 +143,12 @@ function App() {
           className="grid items-center gap-8 rounded-2xl border border-slate-800 bg-card/80 p-6 shadow-neon md:grid-cols-[1.25fr_1fr] md:p-10"
         >
           <div>
-            <p className="mb-3 inline-block rounded-full border border-neonPurple/50 px-3 py-1 text-xs uppercase tracking-widest text-neonPurple">
+            <p className="mb-3 inline-block rounded-full border border-neonPurple/50 px-3 py-1 font-mono text-xs uppercase tracking-widest text-neonPurple">
               Portfolio
             </p>
-            <h1 className="text-3xl font-bold leading-tight text-white md:text-5xl">
-              Dawid Chryc - QA Specialist & IT Engineer
+            <h1 className="font-display text-3xl font-bold leading-tight tracking-wide text-white md:text-5xl">
+              <span className="block">Dawid Chryc</span>
+              <span className="block">QA Specialist & IT Engineer</span>
             </h1>
             <p className="mt-4 max-w-xl text-sm text-slate-300 md:text-base">
               Software Test Engineer with 3.5+ years of experience ensuring reliable, high-quality web applications
@@ -147,14 +158,14 @@ function App() {
             </p>
             <div className="mt-5 flex flex-wrap gap-2 text-xs md:text-sm">
               {["Automation Testing", "API Verification", "Validation QA", "CI/CD Mindset"].map((chip) => (
-                <span key={chip} className="rounded-full border border-neonBlue/40 bg-slate-900 px-3 py-1 text-neonBlue">
+                <span key={chip} className="rounded-full border border-neonBlue/40 bg-slate-900 px-3 py-1 font-mono text-xs text-neonBlue md:text-sm">
                   {chip}
                 </span>
               ))}
             </div>
             <a
               href="#contact"
-              className="mt-8 inline-flex rounded-lg bg-neonBlue px-5 py-3 text-sm font-semibold text-slate-950 transition hover:shadow-neon"
+              className="mt-8 inline-flex rounded-lg bg-neonBlue px-5 py-3 font-mono text-sm font-semibold uppercase tracking-wider text-slate-950 transition hover:shadow-neon"
             >
               Hire Me
             </a>
@@ -200,7 +211,7 @@ function App() {
                       <span className="rounded-xl border border-neonPurple/40 bg-slate-900/80 p-3 text-xl text-neonBlue transition group-hover:text-white">
                         <Icon />
                       </span>
-                      <h3 className="text-lg font-semibold text-white">{title}</h3>
+                      <h3 className="font-display text-lg font-semibold tracking-wide text-white">{title}</h3>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {items.map((item) => (
@@ -230,7 +241,7 @@ function App() {
                       <span className="rounded-lg border border-slate-700 bg-slate-900 p-2 text-sm text-neonBlue transition group-hover:text-white">
                         <Icon />
                       </span>
-                      <h3 className="text-sm font-semibold text-white">{title}</h3>
+                      <h3 className="font-display text-sm font-semibold tracking-wide text-white">{title}</h3>
                     </div>
                     <div className="mt-auto flex flex-wrap gap-2">
                       {items.map((item) => (
@@ -259,9 +270,9 @@ function App() {
             {experience.map((item) => (
               <div key={item.company} className="relative rounded-xl border border-slate-800 bg-card p-4">
                 <span className="absolute -left-[1.7rem] top-6 h-3 w-3 rounded-full bg-neonBlue md:-left-[2rem]" />
-                <p className="text-xs uppercase tracking-widest text-neonPurple">{item.period}</p>
-                <h3 className="mt-1 text-lg font-semibold text-white">{item.company}</h3>
-                <p className="text-sm text-neonBlue">{item.role}</p>
+                <p className="text-xs font-mono uppercase tracking-widest text-neonPurple">{item.period}</p>
+                <h3 className="mt-1 font-display text-lg font-semibold tracking-wide text-white">{item.company}</h3>
+                <p className="font-mono text-sm text-neonBlue">{item.role}</p>
                 <ul className="mt-3 space-y-2 text-sm text-slate-300">
                   {item.highlights.map((point) => (
                     <li key={point} className="flex gap-2">
@@ -284,7 +295,7 @@ function App() {
           <div className="grid gap-4 md:grid-cols-3">
             {projects.map((project) => (
               <article key={project.title} className="rounded-xl border border-slate-800 bg-card p-5">
-                <h3 className="text-lg font-semibold text-white">{project.title}</h3>
+                <h3 className="font-display text-lg font-semibold tracking-wide text-white">{project.title}</h3>
                 <p className="mt-3 text-sm text-slate-300">{project.description}</p>
                 <div className="mt-5 flex gap-3 text-sm">
                   <a className="text-neonBlue hover:text-white" href={project.github} target="_blank" rel="noreferrer">
@@ -326,7 +337,7 @@ function App() {
                 placeholder="Your message..."
                 required
               />
-              <button type="submit" className="rounded-lg bg-neonPurple px-4 py-2 text-sm font-semibold text-white hover:shadow-purple">
+              <button type="submit" className="rounded-lg bg-neonPurple px-4 py-2 font-mono text-sm font-semibold uppercase tracking-wider text-white hover:shadow-purple">
                 Send Message
               </button>
               <p className="text-xs text-slate-400">{status}</p>
@@ -353,7 +364,7 @@ function App() {
         </motion.section>
       </main>
 
-      <footer className="relative z-10 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+      <footer className="relative z-10 border-t border-slate-800 py-6 text-center font-mono text-xs text-slate-500 md:ml-56">
         <p>{year} Dawid Chryc. Crafted in React + Vite + Tailwind.</p>
       </footer>
     </div>
